@@ -1,0 +1,81 @@
+# 项目概览
+
+> 用途：初始化项目范围，减少后续上下文丢失。
+
+## 一、基础信息
+
+- 项目名称：
+- 创建日期：
+- 最后更新：
+- 当前负责人：
+
+## 二、研究定位
+
+- 论文题目：
+- 学科类型：
+- 论文类型：
+- 目标院校/期刊/会议：
+- 截止日期：
+
+## 三、本项目约束
+
+- 目标字数：
+- 引用格式（GB/T / APA / IEEE / MLA）：
+- 参考文献/注释章：默认独立成章，路径 `chapters/07-references.md`（按实际大纲调整编号）
+- 引用校验台账：默认 `refs/citation-verification.csv`
+- 语言要求（中文 / 英文 / 中英双语）：
+- 文件格式要求（Markdown / Word / LaTeX）：
+
+## 四、写作偏好（必须记录）
+
+- 正文是否允许加粗：默认不允许
+- 段落间空行：默认必须
+- 正文是否允许列表：默认不允许
+- 其他风格偏好：
+
+## 五、研究问题与方法
+
+- 核心研究问题：
+- 研究方法：
+- 数据来源：
+- 预期贡献：
+
+## 六、当前阶段
+
+- 当前阶段：
+- 当前任务：
+- 下一个里程碑：
+
+## 七、目录约定
+
+```text
+项目目录/
+├── plan/
+│   ├── project-overview.md
+│   ├── stage-gates.md
+│   ├── progress.md
+│   ├── outline.md
+│   ├── notes.md
+│   ├── task-packets/
+│   ├── chapter-blueprints/
+│   └── review/
+├── chapters/
+│   └── 07-references.md
+├── tables/
+│   └── table-schema.md
+├── figures/
+│   └── data-manifest.md
+└── refs/
+    ├── README.md
+    ├── citation-verification.csv
+    └── evidence-map.md
+```
+
+## 八、初始化确认清单
+
+- [ ] 已与用户确认研究主题
+- [ ] 已与用户确认输出物与截止时间
+- [ ] 已确认写作偏好（无加粗、段间空一行等）
+- [ ] 已建立最终参考文献/注释章
+- [ ] 已建立引用校验台账
+- [ ] 已确定本轮优先任务
