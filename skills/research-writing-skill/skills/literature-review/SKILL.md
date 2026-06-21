@@ -1,6 +1,6 @@
 ---
 name: literature-review
-description: Use when writing literature review sections - guides searching, organizing, and synthesizing academic sources
+description: Use when writing literature review sections or building a citation-ready literature pool, including CNKI/MCP batch retrieval, authority screening, PDF reading, organizing, and synthesizing academic sources
 allowed-tools: Read, Write, Edit, Bash, WebSearch, WebFetch
 ---
 
@@ -14,7 +14,7 @@ allowed-tools: Read, Write, Edit, Bash, WebSearch, WebFetch
 这是最重要的原则，必须严格遵守：
 
 1. **英文文献**：可通过网络搜索获取，但必须验证真实性
-2. **中文文献**：明确告知用户去知网（CNKI）搜索，AI提供搜索建议
+2. **中文文献**：有 CNKI MCP/浏览器权限时，AI应主动批量检索、筛选、下载并读取；无权限、验证码或登录失败时，再请用户兜底
 3. **所有引用必须可追溯、可验证**
 4. **不确定的文献信息，宁可不写也不编造**
 </EXTREMELY-IMPORTANT>
@@ -96,7 +96,9 @@ Yulin Xu and Chaojun Ouyang (2024). CAS Landslide Dataset...
 - [ ] 确认综述主题和范围
 - [ ] 生成搜索关键词（中英文）
 - [ ] 英文文献：执行搜索并整理结果
-- [ ] 中文文献：提供搜索策略，等待用户提供
+- [ ] 中文文献：优先用 CNKI MCP/浏览器批量检索；无权限时再提供搜索策略让用户兜底
+- [ ] 中文文献：优先筛选高被引、高下载和权威来源论文
+- [ ] 可下载全文的文献：下载到 `References_PDF/` 后读取摘要/正文，再决定是否进入引用池
 - [ ] 按主题分类整理文献
 - [ ] 生成证据-论点映射（evidence-claim map）
 - [ ] 标注每条文献的引用位置（citation slot）
@@ -121,6 +123,7 @@ Yulin Xu and Chaojun Ouyang (2024). CAS Landslide Dataset...
 2. `引用位置 / citation slot` 必须具体到段落角色，如“Introduction-P2 方法谱系”或“RelatedWork-P3 FL-IDS 局限”。
 3. 每个核心论点至少有 1 条强支撑文献；关键研究空白应由 2 条以上文献共同支撑。
 4. 只允许使用题名、摘要、DOI 元数据、用户提供摘录或已读取全文中的信息。
+5. CNKI 批量检索候选文献必须记录来源级别、被引量、下载量和是否已读全文；可在 evidence map 中增加 `Source level`、`Citations/Downloads`、`Full text read` 等列。
 
 如果没有 evidence-claim map，不得声称文献综述已完成。
 
@@ -137,6 +140,8 @@ Yulin Xu and Chaojun Ouyang (2024). CAS Landslide Dataset...
 - `用户校验结果`
 - `处理建议`
 - `最后更新`
+
+CNKI 批量入库时，优先额外记录：`来源级别`、`被引量`、`下载量`、`检索式`、`数据库链接`、`PDF路径`、`是否已读全文`。这些字段可写入 CSV 扩展列或 `校验情况`，但不得替代人工核验状态。
 
 机器检索、CrossRef、CNKI/万方/维普页面、政府网页、本地 PDF 或数据库导出只能作为机器初核；没有用户明确确认，不得填写为人工校验通过。若用户确认某条文献虚构、不可用或与正文不匹配，必须从正文、最终参考文献章和 CSV 中删除或替换，并在回复中说明。
 
@@ -249,11 +254,37 @@ Scientific Data. 10.1038/s41597-023-02847-z
 4. 限定时间范围：近5年优先
 5. 按引用量排序找高影响力文献
 
-### 1.2 中文文献搜索
+### 1.2 CNKI MCP 批量检索与下载（中文文献优先）
 
 <HARD-GATE>
-AI无法直接搜索中文学术数据库，必须让用户配合。
+CNKI MCP/浏览器自动化可用时，AI应主动完成批量检索、排序、筛选、下载和读取。无登录权限、验证码阻塞、下载权限不足或 MCP 不可用时，再请用户手动配合。
 </HARD-GATE>
+
+**优先级规则：**
+
+1. 优先高级检索，先按主题、篇名、关键词、作者、来源、年份范围组合检索。
+2. 优先权威来源：SCI、SSCI、CSCD、CSSCI、北大核心、EI，以及可核验的中科院分区表、JCR分区表等主流分区来源。
+3. 同等相关性下，优先被引量高、下载量高的论文；综述类和奠基性文献可适当放宽发表年份。
+4. 下载 PDF/CAJ 后放入 `References_PDF/`，再读取摘要、关键词、目录和正文相关段落。
+5. 只有读过题名/摘要/全文或用户提供摘录，并能支撑具体论点的文献，才能进入 evidence map 和正文 citation slot。
+
+**推荐 MCP 流程：**
+
+1. 用 `cnki-advanced-search` 设置主题/篇名/关键词、年份和来源类别。
+2. 用 `cnki-navigate-pages` 按 `citations` 或 `downloads` 排序。
+3. 用 `cnki-parse-results` 批量提取题名、作者、来源、年份、被引量、下载量和链接。
+4. 选出高相关、高权威、高被引/高下载候选文献，必要时跨页补充。
+5. 用 `cnki-paper-detail` 抽取摘要、关键词、基金、分类号和引文网络信息。
+6. 用 `cnki-download` 下载可获取全文；失败时记录原因并请用户补充。
+7. 读取下载后的 PDF/CAJ 可抽取内容，写入 `refs/evidence-map.md` 和 `refs/citation-verification.csv`。
+
+**不得做的事：**
+
+- 不得只按题名看起来相关就放进正文。
+- 不得把“高被引/高下载”当作自动可引用；它只表示优先阅读。
+- 不得把 SCI、SSCI、CSCD、北大核心、中科院分区、JCR 分区等来源级别写成已确认，除非数据库页面、期刊页面或用户提供材料能核验。
+
+### 1.3 中文文献搜索（无 MCP/无权限时）
 
 **推荐数据库：**
 - **知网（CNKI）**：最全面的中文学术数据库
@@ -265,7 +296,7 @@ AI无法直接搜索中文学术数据库，必须让用户配合。
 
 1. **生成搜索关键词**
 2. **提供搜索策略建议**
-3. **用户提供摘要后，AI帮助整理**
+3. **用户提供摘要、导出记录或PDF后，AI帮助整理、阅读和入库**
 
 ## 二、文献整理
 
@@ -408,19 +439,19 @@ python scripts/scholar_search.py "搜索关键词" --sources crossref,semanticsc
 
 ### 场景2：用户需要中文文献
 
-> "中文学术文献需要你在知网（CNKI）等数据库搜索，我来帮你准备搜索策略。
+> "我会优先尝试用 CNKI MCP/浏览器自动化批量检索中文文献；如果遇到登录、验证码或下载权限限制，再请你手动补充。
 >
 > **建议搜索关键词**：
 > - 主题词：[关键词1]、[关键词2]
 > - 组合搜索：[关键词1] AND [关键词2]
 >
 > **搜索步骤**：
-> 1. 访问 https://www.cnki.net/
-> 2. 选择"高级搜索"
-> 3. 输入上述关键词
-> 4. 筛选条件：核心期刊/CSSCI，近5年
+> 1. 高级检索主题/篇名/关键词，并记录检索式
+> 2. 优先筛选 SCI、SSCI、CSCD、CSSCI、北大核心、EI 等权威来源
+> 3. 按被引量、下载量排序，优先选高相关、高权威候选文献
+> 4. 下载可获取全文并读取摘要/正文相关段落
 >
-> **请将搜索到的文献摘要粘贴给我**，我帮你整理和分析。"
+> 如果自动化受阻，请将 CNKI 导出记录、摘要或PDF发给我，我继续整理和分析。"
 
 ### 场景3：用户提供了文献摘要
 

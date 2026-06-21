@@ -117,6 +117,10 @@ async () => {
 > Navigated to page {page}. Total {total} results.
 > Results now sorted by {sortBy}.
 
+## Thesis literature workflow
+
+For CNKI batch retrieval used in thesis writing, sort by `citations` first to find classic/high-impact papers, then sort by `downloads` to find widely used Chinese literature. After each sort, call `cnki-parse-results` and compare relevance, source level, citation count, and download count before selecting papers for detail extraction or download.
+
 ## Tool calls: 1 (evaluate_script only)
 
 ## Verified selectors

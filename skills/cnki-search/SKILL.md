@@ -6,7 +6,7 @@ argument-hint: "[search keywords]"
 
 # CNKI Basic Search
 
-Search CNKI for papers using keyword(s). Returns result count and structured result list (titles, URLs, authors, journal, date) in a single call.
+Search CNKI for papers using keyword(s). Returns result count and structured result list (titles, URLs, authors, journal, date, citations, downloads) in a single call.
 
 ## Arguments
 
@@ -103,6 +103,16 @@ Searched CNKI for "$ARGUMENTS": found {total} results (page {page}).
 ### 4. Follow-up: navigate to a paper
 
 When the user wants to open or download a specific paper, use `navigate_page` with the result's `href` URL directly — do NOT click the link (clicking opens a new tab and wastes 3 extra tool calls for tab management).
+
+## Batch literature selection for thesis writing
+
+When the search is for a literature pool or thesis references:
+
+1. Prefer `cnki-advanced-search` if the topic needs authority filtering.
+2. Use `cnki-navigate-pages` to sort by `citations` or `downloads` before selecting candidates.
+3. Prefer papers with high citation counts, high download counts, and authoritative source labels such as SCI, SSCI, CSCD, CSSCI, 北大核心, EI, or verifiable JCR / CAS partition status.
+4. Treat citations/downloads as prioritization signals only. Do not cite a paper until its metadata and usable claim have been verified through detail page, export record, abstract, or full text.
+5. Send selected high-priority papers to `cnki-paper-detail` and then `cnki-download` when full text is available.
 
 ## Captcha detection
 

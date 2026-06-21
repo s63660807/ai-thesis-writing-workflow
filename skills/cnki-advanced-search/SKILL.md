@@ -1,6 +1,6 @@
 ---
 name: cnki-advanced-search
-description: Perform advanced search on CNKI with field filters like author, title, journal, date range, source category (SCI/EI/CSSCI/北大核心). Use when user needs precise filtered search beyond simple keywords.
+description: Perform advanced search on CNKI with field filters like author, title, journal, date range, and source category (SCI/EI/CSSCI/CSCD/北大核心). Use when user needs precise filtered search, authority screening, or batch literature retrieval beyond simple keywords.
 argument-hint: "[describe search criteria in natural language]"
 ---
 
@@ -17,7 +17,7 @@ Perform a filtered search on CNKI using the **old-style** advanced search interf
 - **Author name** (作者) — separate field `#au_1_value1`
 - **Journal/source** (文献来源) — separate field `#magazine_value1`
 - **Date range** (时间范围) — `#startYear` / `#endYear`
-- **Source category** (来源类别：SCI, EI, 北大核心, CSSCI, CSCD)
+- **Source category** (来源类别：SCI, EI, 北大核心, CSSCI, CSCD；SSCI、JCR分区、中科院分区需通过期刊/数据库页面或用户材料另行核验)
 
 ## Steps
 
@@ -131,6 +131,17 @@ async () => {
 ### 3. Report
 
 > Advanced search: "{query}" ({fieldType}) + source: {sourceTypes} → {total} results.
+
+### 4. Batch authority-first workflow
+
+For thesis literature retrieval, prefer this sequence:
+
+1. Start with authoritative source filters: SCI, EI, CSSCI, CSCD, 北大核心 where CNKI exposes checkboxes.
+2. If too few results remain, broaden source filters but keep the original query audit trail.
+3. Sort the results with `cnki-navigate-pages`: first by `citations` for classic/high-impact work, then by `downloads` for widely used Chinese literature.
+4. Use `cnki-parse-results` to batch capture title, authors, journal, year, source type, citations, downloads, and URL.
+5. Prioritize papers that combine high relevance, high citations/downloads, and verifiable authority labels. JCR partition, CAS partition, SCI/SSCI status, CSCD, CSSCI, and 北大核心 must be recorded as pending unless verified from a reliable page or user-provided material.
+6. Use `cnki-paper-detail` and `cnki-download` for selected papers before they enter the thesis evidence map.
 
 ## Tool calls: 2 (navigate + evaluate_script)
 

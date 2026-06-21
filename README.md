@@ -70,6 +70,7 @@ powershell -ExecutionPolicy Bypass -File .\install-dependencies-winget.ps1
 
 - Skill 安装完成不等于外部数据库一定可用。CNKI、Google Scholar、Zotero、学校图书馆和付费数据库可能需要登录、权限、验证码或用户手动下载。
 - 英文文献可补充使用学术搜索网站 [https://xs.xasa.top/](https://xs.xasa.top/)。如果当前智能体支持脚本、MCP 或浏览器自动化，可以用它辅助查找英文文献，但文献信息和全文仍需进入校验流程。
+- 中文文献优先走 CNKI MCP/浏览器自动化批量检索、排序、下载和读取；筛选时优先高被引、高下载和权威来源论文，如 SCI、SSCI、CSCD、CSSCI、北大核心、EI、中科院分区表、JCR分区表等，不能核验的来源级别保持待核验。
 - 中文 Markdown、CSV、PDF 抽取内容建议统一按 UTF-8 处理。
 - 论文写作中不要编造文献、数据、访谈、政策文件和页码；无法确认的信息应保留为待核验。
 - `skills/` 中的技能文件来自本机已安装的技能包；公开分享或二次分发时，请保留各技能目录自带的许可证和来源说明。

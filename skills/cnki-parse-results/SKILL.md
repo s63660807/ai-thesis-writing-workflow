@@ -82,6 +82,17 @@ CNKI search results ({totalCount} total, page {pageInfo}):
 2. ...
 ```
 
+## Thesis literature triage
+
+When parsing results for thesis reference building, keep citations and downloads in the output and use them as prioritization signals. Prefer candidates that combine:
+
+- high topic relevance;
+- high citation count;
+- high download count;
+- authoritative source labels such as SCI, SSCI, CSCD, CSSCI, 北大核心, EI, or verifiable JCR / CAS partition status.
+
+Do not treat these signals as proof that the paper can be cited. Send shortlisted papers to `cnki-paper-detail`, download readable full text when possible, and record metadata, source level, citations/downloads, URL, file path, and verification state in the project evidence map or citation ledger.
+
 ### 4. Fallback: snapshot-based parsing
 
 If JavaScript returns empty (DOM structure changed), use `mcp__chrome-devtools__take_snapshot` and parse the accessibility tree manually:

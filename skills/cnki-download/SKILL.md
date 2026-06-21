@@ -85,6 +85,16 @@ Based on JS result:
 - `error: not_logged_in` → tell user to log in
 - `error: captcha` → tell user to solve captcha
 
+## Thesis reference workflow
+
+When downloading papers for thesis writing:
+
+1. Download selected high-priority papers from CNKI search/detail results into `References_PDF/`.
+2. Prefer papers already screened by relevance, high citation count, high download count, and authoritative source labels such as SCI, SSCI, CSCD, CSSCI, 北大核心, EI, or verifiable JCR / CAS partition status.
+3. After download, read the PDF/CAJ or extracted text before using it as a citation. The download event alone is not evidence.
+4. Record the file path, source level, citations/downloads, download status, and full-text reading status in `refs/citation-verification.csv` or the project evidence map.
+5. If only CAJ is available and the current environment cannot read it, mark the source as pending full-text extraction and ask the user for PDF/text if needed.
+
 ## Tool calls: 1–2 (navigate_page if URL + evaluate_script)
 
 ## Verified selectors
