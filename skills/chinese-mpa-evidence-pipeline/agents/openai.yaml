@@ -1,0 +1,7 @@
+interface:
+  display_name: "中文 MPA 证据流水线"
+  short_description: "把案例材料转为可追溯图表、附录、引文和 Word 稿"
+  default_prompt: "使用 $chinese-mpa-evidence-pipeline 将案例材料整理为可追溯的论文证据，并同步校验正文、引文台账和导出稿。"
+
+policy:
+  allow_implicit_invocation: true
