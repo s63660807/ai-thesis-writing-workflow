@@ -47,6 +47,7 @@ powershell -ExecutionPolicy Bypass -File .\install-dependencies-winget.ps1
 
 ## 已打包的 skills
 
+- `chinese-mpa-evidence-pipeline`
 - `research-writing-skill`
 - `pdf`
 - `cnki-advanced-search`
